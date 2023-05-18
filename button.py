@@ -1,7 +1,7 @@
 import pygame
 
 class Button():
-    def _init_(self, image, pos):
+    def __init__(self, image, pos):
         self.image = image
         self.x_pos = pos[0]
         self.y_pos = pos[1]
