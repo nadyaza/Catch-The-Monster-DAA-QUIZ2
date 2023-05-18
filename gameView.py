@@ -4,34 +4,31 @@ import sys
 import random
 import pygame
 import finding_shortest
- 
-# Class for the orange dude
+
 class Player(object):
-    
+    #Initialize player
     def __init__(self):
         self.image_surf = pygame.image.load("asset/ninja.png").convert_alpha()
         self.resized = pygame.transform.scale(self.image_surf, (45, 45))
         self.x = 10
         self.y = 585
  
+    #Move the player
     def move(self, dx, dy):
-        
-        # Move each axis separately. Note that this checks for collisions both times.
         if dx != 0:
             self.move_single_axis(dx, 0,)
         if dy != 0:
             self.move_single_axis(0, dy,)
     
+    #Move single axist
     def move_single_axis(self, dx, dy):
-        
-        # Move the rect
         self.x += dx
         self.y += dy
         self._player_rect = pygame.Rect(self.x, self.y, self.resized.get_width(), self.resized.get_height())
         self._player_rect.center = (self.x, self.y)
  
 class Enemy(object):
-    
+    #Initialize Monsters
     def __init__(self):
         self.end_rect = pygame.image.load("asset/monster.png").convert_alpha()
         self.resized = pygame.transform.scale(self.end_rect, (50, 50))
@@ -39,7 +36,7 @@ class Enemy(object):
         self.y = 85
 
 class Wall(object) :
-    
+    #initialize wall / grass
     def __init__(self, x, y):
         self.bg = pygame.image.load("asset/rumput.png").convert()
         self.resized = pygame.transform.scale(self.bg, (45, 45))
@@ -48,7 +45,7 @@ class Wall(object) :
         Walls.append(self)
         
 class Road(object) :
-    
+    #initialize road / path
     def __init__(self, img, x, y):
         self.model = pygame.image.load(img).convert()
         self.resized = pygame.transform.scale(self.model, (45, 45))
@@ -57,7 +54,7 @@ class Road(object) :
         Roads.append(self)
 
 class Pos(object) :
-    
+    #initialize road that also be node in Mgraph or define as Pos
     def __init__(self, img, x, y, index):
         self.Pos = pygame.image.load(img).convert()
         self.resized = pygame.transform.scale(self.Pos, (45, 45))
@@ -66,7 +63,7 @@ class Pos(object) :
         self.index = index
         self.question = 1
         Poss.append(self)
-        finding_shortest.insertPos(index)
+        finding_shortest.insertPos(index) #Add index to graph
         
 def checkWall(player, Walls, maskP) :
     sign = 0
@@ -124,7 +121,7 @@ def lose_page():
 
         pygame.display.update()
             
-# Initialise pygame
+# Initialize pygame
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 pygame.init()
  
