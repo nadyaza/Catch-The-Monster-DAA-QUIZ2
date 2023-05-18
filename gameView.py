@@ -39,8 +39,8 @@ class Enemy(object):
 
 class Wall(object) :
     
-    def __init__(self, img, x, y):
-        self.bg = pygame.image.load(img).convert_alpha()
+    def __init__(self, x, y):
+        self.bg = pygame.image.load("asset/rumput.png").convert()
         self.resized = pygame.transform.scale(self.bg, (50, 50))
         self.x = x
         self.y = y
@@ -55,16 +55,16 @@ class Road(object) :
         self.y = y
         Roads.append(self)
 
-class Hint(object) :
+class Pos(object) :
     
     def __init__(self, img, x, y, index):
-        self.hint = pygame.image.load(img).convert()
-        self.resized = pygame.transform.scale(self.hint, (50, 50))
+        self.Pos = pygame.image.load(img).convert()
+        self.resized = pygame.transform.scale(self.Pos, (50, 50))
         self.x = x
         self.y = y
         self.index = index
         self.question = 1
-        Hints.append(self)
+        Poss.append(self)
         
 def checkWall(player, Walls, maskP) :
     sign = 0
@@ -76,16 +76,16 @@ def checkWall(player, Walls, maskP) :
         
     return sign
 
-def checkHint(player, Hints, maskP) :
+def checkPos(player, Poss, maskP) :
     sign = 0
-    for hint in Hints:
-        maskH = pygame.mask.from_surface(hint.resized)
-        offset = (hint.x - player.x, hint.y - player.y)
+    for Pos in Poss:
+        maskH = pygame.mask.from_surface(Pos.resized)
+        offset = (Pos.x - player.x, Pos.y - player.y)
         if maskP.overlap(maskH, offset):
-            if(hint.question == 1) : 
-                Route.append(hint.index)
+            if(Pos.question == 1) : 
+                Route.append(Pos.index)
                     
-            hint.question = 0
+            Pos.question = 0
             break
 
     return sign
@@ -116,7 +116,7 @@ screen = pygame.display.set_mode((1000, 800))
 clock = pygame.time.Clock()
 Walls = []
 Roads = []
-Hints = []
+Poss = []
 Route = []
 player = Player() # Create the player
 enemy = Enemy()
@@ -141,26 +141,20 @@ level = [
     "WWWWWWWWWWWYDSDDDDD4",
 ]
 
-# Parse the level string above. W = wall, E = exit
 x = y = 0
 index = 'A'
 for row in level:
     for col in row:
         if col == "W":
-            Wall("asset/rumput.png", x, y)
-        if col == "P":
-            Wall("asset/pohon.png", x, y)
-        if col == "F":
-            Hint("asset/perempatan.png", x, y, index)
-            index = chr(ord(index) + 1)
+            Wall(x, y)
         if col == "D":
-            Road("asset/jalan_2.png", x, y)
+            Road("asset/jalan_2.png", x, y) #ini jalan datar
         if col == "N":
             Road("asset/jalan_1.png", x, y)
         if col == "B":
             Road("asset/buntu_1.png", x, y)
         if col == "X":
-            Road("asset/buntu_4.png", x, y)
+            Road("asset/buntu_4.png", x, y) #ini harusnya buntu kanan
         if col == "Y":
             Road("asset/buntu_3.png", x, y)
         if col == "Z":
@@ -174,16 +168,19 @@ for row in level:
         if col == "4":
             Road("asset/belokan_1.png", x, y)
         if col == "Q":
-            Hint("asset/pertigaan_2.png", x, y, index)
+            Pos("asset/pertigaan_2.png", x, y, index)
             index = chr(ord(index) + 1)
         if col == "R":
-            Hint("asset/pertigaan_3.png", x, y, index)
+            Pos("asset/pertigaan_3.png", x, y, index)
             index = chr(ord(index) + 1)
         if col == "S":
-            Hint("asset/pertigaan_1.png", x, y, index)
+            Pos("asset/pertigaan_1.png", x, y, index)
             index = chr(ord(index) + 1)
         if col == "T":
-            Hint("asset/pertigaan_4.png", x, y, index)
+            Pos("asset/pertigaan_4.png", x, y, index) #ini pertigaan T hadap kanan
+            index = chr(ord(index) + 1)
+        if col == "F":
+            Pos("asset/perempatan.png", x, y, index)
             index = chr(ord(index) + 1)
         x += 50
     y += 50
@@ -210,7 +207,7 @@ while running:
         if sign == 1:
             player.move(2, 0)
         
-        sign = checkHint(player, Hints, maskP)
+        sign = checkPos(player, Poss, maskP)
         if sign == 2:
             print("WIN")
         elif sign == -1 :
@@ -224,7 +221,7 @@ while running:
         if sign == 1:
             player.move(-2, 0)
         
-        sign = checkHint(player, Hints, maskP)
+        sign = checkPos(player, Poss, maskP)
         if sign == 2:
             print("WIN")
         elif sign == -1 :
@@ -238,7 +235,7 @@ while running:
         if sign == 1:
             player.move(0, 2)
         
-        sign = checkHint(player, Hints, maskP)
+        sign = checkPos(player, Poss, maskP)
         if sign == 2:
             print("WIN")
         elif sign == -1 :
@@ -252,7 +249,7 @@ while running:
         if sign == 1:
             player.move(0, -2)
         
-        sign = checkHint(player, Hints, maskP)
+        sign = checkPos(player, Poss, maskP)
         if sign == 2:
             print("WIN")
         elif sign == -1 :
@@ -275,8 +272,8 @@ while running:
          screen.blit(wall.resized, (wall.x, wall.y))
     for road in Roads:
          screen.blit(road.resized, (road.x, road.y))
-    for hint in Hints:
-         screen.blit(hint.resized, (hint.x, hint.y))
+    for Pos in Poss:
+         screen.blit(Pos.resized, (Pos.x, Pos.y))
     screen.blit(enemy.resized, (enemy.x, enemy.y))
     screen.blit(player.resized, (player.x, player.y))
     
