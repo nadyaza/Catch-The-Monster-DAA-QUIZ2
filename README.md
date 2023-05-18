@@ -5,7 +5,7 @@ Group Members:
 3. Wardatul Amalia S	5025211006
 
 
-In this project, we made a game that asked the player to move the ninja towards the monsters via the shortest path. However, we do not indicate which path is the shortest path. There are many branching roads to get to the monsters that can be chosen by the player. If the path that the player finally goes through is the shortest path, then the player wins. Meanwhile, if the path is not the shortest path, a game over sign will appear. To determine the shortest path, we use Dijkstra's algorithm which is one of the algorithms taught in DAA
+ In this project, we made a game that asked the player to move the ninja towards the monsters via the shortest path. However, we do not indicate which path is the shortest path. There are many branching roads to get to the monsters that can be chosen by the player. If the path that the player finally goes through is the shortest path, then the player wins. Meanwhile, if the path is not the shortest path, a game over sign will appear. To determine the shortest path, we use Dijkstra's algorithm which is one of the algorithms taught in DAA
  
 Explanation of Code Dijkstra
 
