@@ -107,6 +107,21 @@ def win_page():
                 sys.exit()
 
         pygame.display.update()
+        
+def lose_page():
+    pygame.display.set_caption("Try to get the shortest path!")
+
+    FILL = pygame.image.load("asset/game_over.png")
+    SCREEN = pygame.display.set_mode((1000, 800))
+    SCREEN.blit(FILL, (0, 0))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
          
 # Initialise pygame
 os.environ["SDL_VIDEO_CENTERED"] = "1"
@@ -234,6 +249,7 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
 
     if key[pygame.K_RIGHT]:
         sign = 0
@@ -248,6 +264,7 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
             
     if key[pygame.K_UP]:
         sign = 0
@@ -262,6 +279,7 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
             
     if key[pygame.K_DOWN]:
         sign = 0
@@ -276,6 +294,7 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
  
     maskP = pygame.mask.from_surface(player.resized)
     maskE = pygame.mask.from_surface(enemy.resized)
