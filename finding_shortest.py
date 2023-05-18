@@ -1,6 +1,6 @@
 import heapq
 
-def shortest_path(graph, start, finish, path):
+def shortest_path(graph, start, finish, route):
     length = {}  # menyimpan jarak terpendek dari titik awal ke setiap titik
     prev = {}  # menyimpan titik sebelumnya yang terhubung dengan setiap titik
     stack = []  # stack untuk mengurutkan titik berdasarkan jarak
@@ -43,39 +43,161 @@ def shortest_path(graph, start, finish, path):
     path.insert(0, start)
 
     print(f"Jalur terpendek dari {start} ke {finish}: {path}")
-    print(f"Jalur dilewati dari {start} ke {finish}: {path}")
-    if path == path:
+    print(f"Jalur dilewati dari {start} ke {finish}: {route}")
+    if route == path:
         return 2
     else:
         return -1
 
-Mgraph = {
-    'A': {'D': 9, 'C': 2},
-    'B': {'E': 10, 'I': 3},
-    'C': {'G': 3, 'A': 2, 'F': 4},
-    'D': {'A': 9, 'E': 2},
-    'E': {'D': 2, 'B': 10},
-    'F': {'C': 4, 'K': 6},
-    'G': {'C': 3, 'K': 3},
-    'H': {'J': 5, 'I': 7, 'P': 8},
-    'I': {'H': 7, 'B': 3, 'L': 3},
-    'J': {'H': 5, 'N': 4},
-    'K': {'G': 3, 'F': 6, 'M': 2},
-    'L': {'I': 3, 'X': 14},
-    'M': {'K': 2, 'N': 6, 'T': 4},
-    'N': {'M': 6, 'J': 4, 'O': 1},
-    'O': {'N': 1, 'R': 2},
-    'P': {'H': 8, 'Q': 2, 'S': 4},
-    'Q': {'P': 2, 'W': 8},
-    'R': {'U': 5, 'O': 2, 'S': 4},
-    'S': {'R': 4, 'P': 4, 'W': 2},
-    'T': {'M': 4, 'U': 4},
-    'U': {'T': 4, 'R': 5, 'V': 4},
-    'V': {'U': 4, 'W': 3},
-    'W': {'V': 3, 'S': 2, 'Q': 8, 'X': 2},
-    'X': {'W': 2, 'L': 14}
-}
+pos = []    
+map = []
+Mgraph = {}
 
-path = ['T', 'M', 'N', 'J', 'H', 'I', 'B']
-result = shortest_path(Mgraph, 'T', 'B', path)
-print(f"Result: {result}")
+def insertPos(index) :
+    pos.append(index)
+    #print(pos)
+    
+def draw(sign) :
+    map.append(sign)
+    #print(map)
+    
+def roadMap() :
+    for element in pos :
+        temp = {}
+        
+        #Search left branch
+        i = map.index(element) - 1
+        sign = 'l'
+        distance_l = 0
+        while(i > 0 and i < len(map)) :
+            #print(map[i])
+            distance_l += 1
+            if(map[i] == '1') :
+                sign = 'l'
+            elif(map[i] == '2') :
+                sign = 'u'
+            elif(map[i] == '3') :
+                sign = 'd'
+            elif(map[i] == '4') :
+                sign = 'l'
+            elif(map[i] == "*") :
+                sign = sign
+            elif(map[i] == "!") :
+                sign = 'f'
+            elif(map[i] == '#') :
+                sign = 'f'
+            else :
+                temp[map[i]] = distance_l
+                #roadMap(map[i])
+                sign = 'f'
+        
+            if(sign == 'd') : i += 20
+            elif(sign == 'u') : i -= 20
+            elif(sign == 'l') : i -= 1
+            elif(sign == 'f') : i = 0
+            
+        #Search top branch
+        i = map.index(element) - 20
+        sign = 'u'
+        distance_u = 0
+        while(i > 0 and i < len(map)) :
+            #print(map[i])
+            distance_u += 1
+            if(map[i] == '1') :
+                sign = 'l'
+            elif(map[i] == '2') :
+                sign = 'u'
+            elif(map[i] == '3') :
+                sign = 'r'
+            elif(map[i] == '4') :
+                sign = 'l'
+            elif(map[i] == "*") :
+                sign = sign
+            elif(map[i] == "!") :
+                sign = 'f'
+            elif(map[i] == '#') :
+                sign = 'f'
+            else :
+                temp[map[i]] = distance_u
+                #roadMap(map[i])
+                sign = 'f'
+            
+            if(sign == 'd') : i += 20
+            elif(sign == 'u') : i -= 20
+            elif(sign == 'l') : i -= 1
+            elif(sign == 'r') : i += 1
+            elif(sign == 'f') : i = 0
+        
+        #Search right branch
+        i = map.index(element) + 1
+        sign = 'r'
+        distance_r = 0
+        while(i > 0 and i < len(map)) :
+            #print(map[i])
+            distance_r += 1
+            if(map[i] == '1') :
+                sign = 'd'
+            elif(map[i] == '2') :
+                sign = 'r'
+            elif(map[i] == '3') :
+                sign = 'r'
+            elif(map[i] == '4') :
+                sign = 'u'
+            elif(map[i] == "*") :
+                sign = sign
+            elif(map[i] == "!") :
+                sign = 'f'
+            elif(map[i] == '#') :
+                sign = 'f'
+            else :
+                temp[map[i]] = distance_r
+                #roadMap(map[i])
+                sign = 'f'
+            
+            if(sign == 'd') : i += 20
+            elif(sign == 'u') : i -= 20
+            elif(sign == 'l') : i -= 1
+            elif(sign == 'r') : i += 1
+            elif(sign == 'f') : i = 0
+
+        #Search bottom branch
+        i = map.index(element) + 20
+        sign = 'd'
+        distance_d = 0
+        while(i > 0 and i < len(map)) :
+            #print(map[i])
+            distance_d += 1
+            if(map[i] == '1') :
+                sign = 'd'
+            elif(map[i] == '2') :
+                sign = 'r'
+            elif(map[i] == '3') :
+                sign = 'd'
+            elif(map[i] == '4') :
+                sign = 'l'
+            elif(map[i] == "*") :
+                sign = sign
+            elif(map[i] == "!") :
+                sign = 'f'
+            elif(map[i] == '#') :
+                sign = 'f'
+            else :
+                temp[map[i]] = distance_d
+                #roadMap(map[i])
+                sign = 'f'
+            
+            if(sign == 'd') : i += 20
+            elif(sign == 'u') : i -= 20
+            elif(sign == 'l') : i -= 1
+            elif(sign == 'r') : i += 1
+            elif(sign == 'f') : i = 0
+              
+        Mgraph[element] = temp 
+
+def printG() :
+    for node, branch in Mgraph.items():
+        print(node, branch)
+        
+def check(Route) :
+    win = shortest_path(Mgraph, 'T', 'B', Route)
+    return win

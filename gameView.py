@@ -10,9 +10,9 @@ class Player(object):
     
     def __init__(self):
         self.image_surf = pygame.image.load("asset/ninja.png").convert_alpha()
-        self.resized = pygame.transform.scale(self.image_surf, (55, 55))
+        self.resized = pygame.transform.scale(self.image_surf, (50, 50))
         self.x = 10
-        self.y = 643
+        self.y = 647
  
     def move(self, dx, dy):
         
@@ -98,7 +98,22 @@ def win_page():
     pygame.display.set_caption("Congratulations!")
 
     FILL = pygame.image.load("asset/win.png")
-    SCREEN = pygame.display.set_mode((1000, 800))
+    SCREEN = pygame.display.set_mode((928, 672))
+    SCREEN.blit(FILL, (0, 0))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+        
+def lose_page():
+    pygame.display.set_caption("Try to get the shortest path!")
+
+    FILL = pygame.image.load("asset/game_over.png")
+    SCREEN = pygame.display.set_mode((928, 672))
     SCREEN.blit(FILL, (0, 0))
 
     while True:
@@ -129,7 +144,7 @@ enemy = Enemy()
 level = [
     "DD1WWWWWWWWWWWWWWWWW",
     "WWTDDDD1WWWNW3DDD1WW",
-    "WWWWWWWNWBWNWNWWW2QD",
+    "WWNWWWWNWBWNWNWWW2QD",
     "W3SDD1W2DSDSD4WWWWNW",
     "WNWWWTXWWWWWWWWWWWNW",
     "DS1W34W3DDDQDDDDDDS1",
@@ -153,22 +168,22 @@ for row in level:
             Wall(x, y)
             finding_shortest.draw('#')
         if col == "D":
-            Road("asset/jalan_2.png", x, y) #ini jalan datar
+            Road("asset/jalan_1.png", x, y)
             finding_shortest.draw('*')
         if col == "N":
-            Road("asset/jalan_1.png", x, y)
+            Road("asset/jalan_2.png", x, y)
             finding_shortest.draw('*')
         if col == "B":
             Road("asset/buntu_1.png", x, y)
             finding_shortest.draw('!')
         if col == "X":
-            Road("asset/buntu_4.png", x, y) #ini harusnya buntu kanan
+            Road("asset/buntu_2.png", x, y)
             finding_shortest.draw('!')
         if col == "Y":
-            Road("asset/buntu_3.png", x, y)
+            Road("asset/buntu_4.png", x, y)
             finding_shortest.draw('!')
         if col == "Z":
-            Road("asset/buntu_2.png", x, y)
+            Road("asset/buntu_3.png", x, y)
             finding_shortest.draw('!')
         if col == "1":
             Road("asset/belokan_4.png", x, y)
@@ -183,11 +198,11 @@ for row in level:
             Road("asset/belokan_1.png", x, y)
             finding_shortest.draw('4')
         if col == "Q":
-            Pos("asset/pertigaan_2.png", x, y, index)
+            Pos("asset/pertigaan_3.png", x, y, index)
             finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "R":
-            Pos("asset/pertigaan_3.png", x, y, index)
+            Pos("asset/pertigaan_4.png", x, y, index)
             finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "S":
@@ -195,7 +210,7 @@ for row in level:
             finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "T":
-            Pos("asset/pertigaan_4.png", x, y, index) #ini pertigaan T hadap kanan
+            Pos("asset/pertigaan_2.png", x, y, index) #ini pertigaan T hadap kanan
             finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "F":
@@ -226,7 +241,7 @@ while running:
         sign = 0
         player.move(-2, 0)
         
-        #sign = checkWall(player, Walls, maskP)
+        sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(2, 0)
         
@@ -235,12 +250,13 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
 
     if key[pygame.K_RIGHT]:
         sign = 0
         player.move(2, 0)
         
-        #sign = checkWall(player, Walls, maskP)
+        sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(-2, 0)
         
@@ -249,12 +265,13 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
             
     if key[pygame.K_UP]:
         sign = 0
         player.move(0, -2)
         
-        #sign = checkWall(player, Walls, maskP)
+        sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(0, 2)
         
@@ -263,12 +280,13 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
             
     if key[pygame.K_DOWN]:
         sign = 0
         player.move(0, 2)
         
-        #sign = checkWall(player, Walls, maskP)
+        sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(0, -2)
         
@@ -277,6 +295,7 @@ while running:
             print("WIN")
         elif sign == -1 :
             print("LOSE")
+            lose_page()
  
     maskP = pygame.mask.from_surface(player.resized)
     maskE = pygame.mask.from_surface(enemy.resized)
