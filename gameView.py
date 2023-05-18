@@ -3,6 +3,7 @@ import shlex
 import sys
 import random
 import pygame
+import finding_shortest
  
 # Class for the orange dude
 class Player(object):
@@ -65,6 +66,7 @@ class Pos(object) :
         self.index = index
         self.question = 1
         Poss.append(self)
+        finding_shortest.insertPos(index)
         
 def checkWall(player, Walls, maskP) :
     sign = 0
@@ -84,6 +86,7 @@ def checkPos(player, Poss, maskP) :
         if maskP.overlap(maskH, offset):
             if(Pos.question == 1) : 
                 Route.append(Pos.index)
+                sign = finding_shortest.check(Route)
                     
             Pos.question = 0
             break
@@ -147,44 +150,63 @@ for row in level:
     for col in row:
         if col == "W":
             Wall(x, y)
+            finding_shortest.draw('#')
         if col == "D":
             Road("asset/jalan_2.png", x, y) #ini jalan datar
+            finding_shortest.draw('*')
         if col == "N":
             Road("asset/jalan_1.png", x, y)
+            finding_shortest.draw('*')
         if col == "B":
             Road("asset/buntu_1.png", x, y)
+            finding_shortest.draw('!')
         if col == "X":
             Road("asset/buntu_4.png", x, y) #ini harusnya buntu kanan
+            finding_shortest.draw('!')
         if col == "Y":
             Road("asset/buntu_3.png", x, y)
+            finding_shortest.draw('!')
         if col == "Z":
             Road("asset/buntu_2.png", x, y)
+            finding_shortest.draw('!')
         if col == "1":
-            Road("asset/belokan_3.png", x, y)
+            Road("asset/belokan_4.png", x, y)
+            finding_shortest.draw('1')
         if col == "2":
             Road("asset/belokan_2.png", x, y)
+            finding_shortest.draw('2')
         if col == "3":
-            Road("asset/belokan_4.png", x, y)
+            Road("asset/belokan_3.png", x, y)
+            finding_shortest.draw('3')
         if col == "4":
             Road("asset/belokan_1.png", x, y)
+            finding_shortest.draw('4')
         if col == "Q":
             Pos("asset/pertigaan_2.png", x, y, index)
+            finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "R":
             Pos("asset/pertigaan_3.png", x, y, index)
+            finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "S":
             Pos("asset/pertigaan_1.png", x, y, index)
+            finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "T":
             Pos("asset/pertigaan_4.png", x, y, index) #ini pertigaan T hadap kanan
+            finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         if col == "F":
             Pos("asset/perempatan.png", x, y, index)
+            finding_shortest.draw(index)
             index = chr(ord(index) + 1)
         x += 50
     y += 50
     x = 0
+
+finding_shortest.roadMap() #to draw a map reference
+finding_shortest.printG() #print graph
     
 running = True
 while running:
@@ -260,14 +282,9 @@ while running:
     
     offset = (enemy.x - player.x, enemy.y - player.y)
     if maskP.overlap(maskE, offset):
-        #print("Collision detected!")
         win_page()
-        # pygame.quit()
-        # sys.exit()
             
     # Draw the scene
-    screen.fill((213, 206, 163))
-    #screen.fill((0, 0, 0))
     for wall in Walls:
          screen.blit(wall.resized, (wall.x, wall.y))
     for road in Roads:
