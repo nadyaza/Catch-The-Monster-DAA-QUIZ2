@@ -10,9 +10,9 @@ class Player(object):
     
     def __init__(self):
         self.image_surf = pygame.image.load("asset/ninja.png").convert_alpha()
-        self.resized = pygame.transform.scale(self.image_surf, (50, 50))
+        self.resized = pygame.transform.scale(self.image_surf, (45, 45))
         self.x = 10
-        self.y = 647
+        self.y = 585
  
     def move(self, dx, dy):
         
@@ -34,15 +34,15 @@ class Enemy(object):
     
     def __init__(self):
         self.end_rect = pygame.image.load("asset/monster.png").convert_alpha()
-        self.resized = pygame.transform.scale(self.end_rect, (55, 55))
-        self.x = 950
-        self.y = 90
+        self.resized = pygame.transform.scale(self.end_rect, (50, 50))
+        self.x = 855
+        self.y = 85
 
 class Wall(object) :
     
     def __init__(self, x, y):
         self.bg = pygame.image.load("asset/rumput.png").convert()
-        self.resized = pygame.transform.scale(self.bg, (50, 50))
+        self.resized = pygame.transform.scale(self.bg, (45, 45))
         self.x = x
         self.y = y
         Walls.append(self)
@@ -51,7 +51,7 @@ class Road(object) :
     
     def __init__(self, img, x, y):
         self.model = pygame.image.load(img).convert()
-        self.resized = pygame.transform.scale(self.model, (50, 50))
+        self.resized = pygame.transform.scale(self.model, (45, 45))
         self.x = x
         self.y = y
         Roads.append(self)
@@ -60,7 +60,7 @@ class Pos(object) :
     
     def __init__(self, img, x, y, index):
         self.Pos = pygame.image.load(img).convert()
-        self.resized = pygame.transform.scale(self.Pos, (50, 50))
+        self.resized = pygame.transform.scale(self.Pos, (45, 45))
         self.x = x
         self.y = y
         self.index = index
@@ -130,7 +130,7 @@ pygame.init()
  
 # Set up the display
 pygame.display.set_caption("Try to Catch the Monster with Shortest Path!")
-screen = pygame.display.set_mode((1000, 800))
+screen = pygame.display.set_mode((900, 720))
  
 clock = pygame.time.Clock()
 Walls = []
@@ -217,8 +217,8 @@ for row in level:
             Pos("asset/perempatan.png", x, y, index)
             finding_shortest.draw(index)
             index = chr(ord(index) + 1)
-        x += 50
-    y += 50
+        x += 45
+    y += 45
     x = 0
 
 finding_shortest.roadMap() #to draw a map reference
