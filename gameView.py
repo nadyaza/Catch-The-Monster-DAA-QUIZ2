@@ -86,7 +86,8 @@ def checkPos(player, Poss, maskP) :
         if maskP.overlap(maskH, offset):
             if(Pos.question == 1) : 
                 Route.append(Pos.index)
-                sign = finding_shortest.check(Route)
+                if(Pos.index == 'B') :
+                    sign = finding_shortest.check(Route)
                     
             Pos.question = 0
             break
@@ -107,7 +108,7 @@ def win_page():
                 sys.exit()
 
         pygame.display.update()
-         
+            
 # Initialise pygame
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 pygame.init()
@@ -225,7 +226,7 @@ while running:
         sign = 0
         player.move(-2, 0)
         
-        sign = checkWall(player, Walls, maskP)
+        #sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(2, 0)
         
@@ -239,7 +240,7 @@ while running:
         sign = 0
         player.move(2, 0)
         
-        sign = checkWall(player, Walls, maskP)
+        #sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(-2, 0)
         
@@ -253,7 +254,7 @@ while running:
         sign = 0
         player.move(0, -2)
         
-        sign = checkWall(player, Walls, maskP)
+        #sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(0, 2)
         
@@ -267,7 +268,7 @@ while running:
         sign = 0
         player.move(0, 2)
         
-        sign = checkWall(player, Walls, maskP)
+        #sign = checkWall(player, Walls, maskP)
         if sign == 1:
             player.move(0, -2)
         
