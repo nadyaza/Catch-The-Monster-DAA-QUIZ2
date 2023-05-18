@@ -263,11 +263,11 @@ def printG() :
     for node, branch in Mgraph.items():
         print(node, branch)
 ```
-This is the Mgraph that obtained from map in gameView while the pogram run
+This is the Mgraph that obtained from map in gameView while the pogram run.
 
 
 
-This is the function that will be used to call the DJikstra algorithm and determine the win or lose status of the game. Route is the sequence of paths traversed by the player. if the Route is the same as the shortest path, it will be declared the win state. If not the same, then declared a lose state
+This is the function that will be used to call the DJikstra algorithm and determine the win or lose status of the game. Route is the sequence of paths traversed by the player. if the Route is the same as the shortest path, it will be declared the win state. If not the same, then declared a lose state.
 ```
 def check(Route) :
     win = shortest_path(Mgraph, 'T', 'B', Route)
